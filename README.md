@@ -42,8 +42,22 @@ auto-skip when the `stockfish` binary is not available.
 You can provide an explicit binary path with:
 
 ```sh
-set STOCKFISH_BIN=C:\\path\\to\\stockfish.exe
+export STOCKFISH_BIN=/path/to/stockfish
 bb test --skip-meta :failing-on-purpose
+```
+
+On PowerShell:
+
+```powershell
+$env:STOCKFISH_BIN = "C:\\path\\to\\stockfish.exe"
+bb test --skip-meta :failing-on-purpose
+```
+
+For debugging purposes, you can enable verbose output from the Stockfish tests by adding STOCKFISH_DEBUG env var:
+
+```sh
+export STOCKFISH_DEBUG=true
+bb test --only-meta :stockfish
 ```
 
 ## To build the static site

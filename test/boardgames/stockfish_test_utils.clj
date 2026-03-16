@@ -6,6 +6,9 @@
 
 (def ^:private default-timeout-ms 10000)
 
+(def ^:private stockfish-debug?
+  (= "true" (some-> (System/getenv "STOCKFISH_DEBUG") str/lower-case)))
+
 (defonce ^:private !stockfish (atom nil))
 (defonce ^:private !stockfish-unavailable-reason (atom nil))
 
@@ -15,7 +18,8 @@
 
 (defn- send-line!
   [{:keys [in]} line]
-  (println "[Stockfish-Runner] >>" line)
+  (when stockfish-debug?
+    (println "[Stockfish-Runner] >>" line))
   (.write ^BufferedWriter in (str line "\n"))
   (.flush ^BufferedWriter in))
 
@@ -50,7 +54,8 @@
                                   (loop []
                                     (if-let [line (.readLine ^BufferedReader reader)]
                                       (do
-                                        (println "[Stockfish-Runner]" line)
+                                        (when stockfish-debug?
+                                          (println "[Stockfish-Runner]" line))
                                         (.put ^LinkedBlockingQueue queue line)
                                         (recur))
                                       (.put ^LinkedBlockingQueue queue ::eof)))
