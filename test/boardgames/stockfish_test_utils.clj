@@ -2,9 +2,9 @@
   (:require [clojure.string :as str]
             [boardgames.core :as core])
   (:import [java.io BufferedReader BufferedWriter InputStreamReader OutputStreamWriter]
-           [java.util.concurrent TimeoutException]))
+           [java.util.concurrent LinkedBlockingQueue TimeoutException]))
 
-(def ^:private default-timeout-ms 5000)
+(def ^:private default-timeout-ms 10000)
 
 (defonce ^:private !stockfish (atom nil))
 (defonce ^:private !stockfish-unavailable-reason (atom nil))
@@ -13,35 +13,22 @@
   (or (System/getenv "STOCKFISH_BIN")
       "stockfish"))
 
-(defn- now-ms []
-  (System/currentTimeMillis))
-
 (defn- send-line!
   [{:keys [in]} line]
+  (println "[Stockfish-Runner] >>" line)
   (.write ^BufferedWriter in (str line "\n"))
   (.flush ^BufferedWriter in))
 
-(defn- read-line-with-timeout
-  [^BufferedReader reader timeout-ms]
-  (let [deadline (+ (now-ms) timeout-ms)]
-    (loop []
-      (cond
-        (.ready reader) (.readLine reader)
-        (> (now-ms) deadline) ::timeout
-        :else (do
-                (Thread/sleep 10)
-                (recur))))))
-
 (defn- read-until!
-  [{:keys [out]} pred timeout-ms]
+  [{:keys [queue]} pred timeout-ms]
   (loop [lines []]
-    (let [line (read-line-with-timeout ^BufferedReader out timeout-ms)]
+    (let [line (.poll ^LinkedBlockingQueue queue timeout-ms java.util.concurrent.TimeUnit/MILLISECONDS)]
       (cond
-        (= ::timeout line)
+        (nil? line)
         (throw (TimeoutException.
                 (str "Timed out waiting for Stockfish output. Collected lines: " (pr-str lines))))
 
-        (nil? line)
+        (= ::eof line)
         lines
 
         :else
@@ -55,9 +42,26 @@
   (let [process (-> (ProcessBuilder. [^String (stockfish-bin)])
                     (.redirectErrorStream true)
                     (.start))
+        queue  (LinkedBlockingQueue.)
+        reader (-> process .getInputStream InputStreamReader. BufferedReader.)
+        _      (doto (Thread. ^Runnable
+                              (fn []
+                                (try
+                                  (loop []
+                                    (if-let [line (.readLine ^BufferedReader reader)]
+                                      (do
+                                        (println "[Stockfish-Runner]" line)
+                                        (.put ^LinkedBlockingQueue queue line)
+                                        (recur))
+                                      (.put ^LinkedBlockingQueue queue ::eof)))
+                                  (catch Throwable _
+                                    (try (.put ^LinkedBlockingQueue queue ::eof)
+                                         (catch Throwable _))))))
+                (.setDaemon true)
+                (.start))
         stockfish {:process process
-                   :in (-> process .getOutputStream OutputStreamWriter. BufferedWriter.)
-                   :out (-> process .getInputStream InputStreamReader. BufferedReader.)}]
+                   :in      (-> process .getOutputStream OutputStreamWriter. BufferedWriter.)
+                   :queue   queue}]
     (send-line! stockfish "uci")
     (read-until! stockfish #(= % "uciok") default-timeout-ms)
     (send-line! stockfish "isready")
@@ -163,7 +167,7 @@
 (defn- piece->fen
   [piece]
   (case piece
-    :- "."
+    - "."
     (name piece)))
 
 (defn- row->fen
