@@ -16,7 +16,7 @@
  ::clerk/auto-expand-results? true
  ::clerk/budget 1000}
 
-#_ (clerk/add-viewers! [viewers/board-viewer])
+#_(clerk/add-viewers! [viewers/board-viewer])
 
 
 ;; ## Handling boards
@@ -56,8 +56,8 @@
        (expand-pmove-dirs [↑ ↓ ← →])
        (pmoves-discard #(or (pmove-on-same-player-piece? %)
                             (pmove-changed-direction? %)))
-       #_       (pmoves-discard (some-fn pmove-changed-direction?
-                                         pmove-on-same-player-piece?))
+       #_(pmoves-discard (some-fn pmove-changed-direction?
+                                  pmove-on-same-player-piece?))
        (map pmove-finish-capturing)
        (pmoves-finish-and-continue)))
 
@@ -96,6 +96,7 @@
         (expand-pmove-dirs [↑])
         (pmoves-discard (some-fn pmove-changed-direction?
                                  pmove-on-same-player-piece?
+                                 pmove-on-other-player-piece?
                                  (partial pmove-max-steps?
                                           (if (pmove-piece-1st-move? pmove) 2 1))))
         (pmoves-finish-and-continue))
@@ -107,8 +108,7 @@
         (map pmove-finish-capturing))
 
    #_(->> pmove ;; En-passant rule: TODO
-          (expand-pmove-dirs [dir-up-left dir-up-right])
-          )))
+          (expand-pmove-dirs [dir-up-left dir-up-right]))))
 
 ;; ### King
 
@@ -193,7 +193,7 @@
    :b expand-pmove-for-bishop
    :n expand-pmove-for-knight
    :q expand-pmove-for-queen
-   :p expand-pmove-for-pawn })
+   :p expand-pmove-for-pawn})
 
 
 (core/defgame chess-game "Chess" initiate-chess-board chess-expansion-rules chess-aggregate-rules)
@@ -226,4 +226,4 @@
        (apply str)))
 
 #_(comment
-  (board->fen initial-chess-symbolic-board))
+    (board->fen initial-chess-symbolic-board))

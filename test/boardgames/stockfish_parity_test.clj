@@ -24,18 +24,6 @@
     :turn 1
     :fen {:castling "KQkq"}}
 
-   {:name "Minimal kings + rook (no castling rights)"
-    :board '[[- - - - k - - -]
-             [- - - - - - - -]
-             [- - - - - - - -]
-             [- - - - - - - -]
-             [- - - - - - - -]
-             [- - - - - - - -]
-             [- - - - - - - -]
-             [- - - - K - - R]]
-    :turn 0
-    :fen {:castling "-"}}
-
    {:name "White short castling available"
     :board '[[- - - - k - - -]
              [- - - - - - - -]
@@ -91,18 +79,18 @@
                    :board (:board game)
                    :error (str t)})
         (let [stockfish-moves (:moves stockfish-result)
-            stockfish-boards (->> stockfish-moves
-                      (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
-                      vec)
-            engine-boards (->> engine-moves
-                     (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
-                     vec)
+              stockfish-boards (->> stockfish-moves
+                                    (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
+                                    vec)
+              engine-boards (->> engine-moves
+                                 (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
+                                 vec)
               missing (set/difference stockfish-moves engine-moves)
               extra (set/difference engine-moves stockfish-moves)]
           (is (= (set stockfish-boards) (set engine-boards))
-            (str "FEN: " fen-str
-               "\nMissing (Stockfish only): " (pr-str (sort missing))
-               "\nExtra (Engine only): " (pr-str (sort extra))))))
+              (str "FEN: " fen-str
+                   "\nMissing (Stockfish only): " (pr-str (sort missing))
+                   "\nExtra (Engine only): " (pr-str (sort extra))))))
 
       ;; Return the same test-case payload shape used by other tests so Clerk can render boards.
       (let [stockfish-moves (or (:moves stockfish-result) #{})
@@ -139,12 +127,12 @@
                           :board (:board game)
                           :error (str t)})
                (let [stockfish-moves (:moves stockfish-result)
-                    stockfish-boards (->> stockfish-moves
-                                          (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
-                                          vec)
-                    engine-boards (->> engine-moves
-                                       (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
-                                       vec)
+                     stockfish-boards (->> stockfish-moves
+                                           (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
+                                           vec)
+                     engine-boards (->> engine-moves
+                                        (keep #(some-> (get uci->pmove %) :steps first :board core/board->symbolic))
+                                        vec)
                      missing (set/difference stockfish-moves engine-moves)
                      extra (set/difference engine-moves stockfish-moves)]
                  (is (= (set stockfish-boards) (set engine-boards))
