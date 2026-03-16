@@ -12,48 +12,48 @@
 
   (t/expect-chess-moves {:piece :P}
 
-                        '[[- - - - -]
-                          [- - - R -]
-                          [- - - - -]
-                          [- P - P -]
-                          [- - - - -]]
+                    '[[- - - - -]
+                      [- - - R -]
+                      [- - - - -]
+                      [- P - P -]
+                      [- - - - -]]
 
-                        '[[- - - - -] [- - - - -] [- - - - -]
-                          [- - - R -] [- P - R -] [- - - R -]
-                          [- P - - -] [- - - - -] [- - - P -]
-                          [- - - P -] [- - - P -] [- P - - -]
-                          [- - - - -] [- - - - -] [- - - - -]])
+                    '[[- - - - -] [- - - - -] [- - - - -]
+                      [- - - R -] [- P - R -] [- - - R -]
+                      [- P - - -] [- - - - -] [- - - P -]
+                      [- - - P -] [- - - P -] [- P - - -]
+                      [- - - - -] [- - - - -] [- - - - -]])
 
   (t/expect-chess-moves {:piece :p} ;; lower case sets the turn to black
 
-                        '[[- - - - -]
-                          [- p - - -]
-                          [- - - - -]
-                          [- - - - -]
-                          [- - - - -]]
+                    '[[- - - - -]
+                      [- p - - -]
+                      [- - - - -]
+                      [- - - - -]
+                      [- - - - -]]
 
-                        ;; Reminder: boards expected to be sorted by X and then Y position of moving piece
-                        '[[- - - - -] [- - - - -]
-                          [- - - - -] [- - - - -]
-                          [- - - - -] [- p - - -]
-                          [- p - - -] [- - - - -]
-                          [- - - - -] [- - - - -]])
+                  ;; Reminder: boards expected to be sorted by X and then Y position of moving piece
+                    '[[- - - - -] [- - - - -]
+                      [- - - - -] [- - - - -]
+                      [- - - - -] [- p - - -]
+                      [- p - - -] [- - - - -]
+                      [- - - - -] [- - - - -]])
 
   ;; Test for already moved pawn
   (t/expect-chess-moves {:piece :P
-                         :update-board-fn t/flag-all-pieces-moved}
+                     :update-board-fn t/flag-all-pieces-moved}
 
-                        '[[- - - - -]
-                          [- - - - -]
-                          [- - - - -]
-                          [- P - - -]
-                          [- - - - -]]
+                    '[[- - - - -]
+                      [- - - - -]
+                      [- - - - -]
+                      [- P - - -]
+                      [- - - - -]]
 
-                        '[[- - - - -]
-                          [- - - - -]
-                          [- P - - -]
-                          [- - - - -]
-                          [- - - - -]]))
+                    '[[- - - - -]
+                      [- - - - -]
+                      [- P - - -]
+                      [- - - - -]
+                      [- - - - -]]))
 
 (deftest chess-pawn-capturing-moves
 
@@ -83,20 +83,22 @@
 
                         '[]))
 
-#_^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
+#_
+^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
   (clerk/add-viewers! [viewers/board-viewer viewers/board-move-viewer viewers/side-by-side-move-viewer])
-#_^{:nextjournal.clerk/visibility {:code :hide :result :show}}
+#_
+  ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
   (t/view-test-case (t/expect-chess-moves-2 {:piece :P
-                                             :extra-checks [{} {} {:captures '(:p)}]}
+                                       :extra-checks [{} {} {:captures '(:p)}]}
 
-                                            '[[- - - - -]
-                                              [- - - - -]
-                                              [- - p - -]
-                                              [- P - - -]
-                                              [- - - - -]]
+                                      '[[- - - - -]
+                                        [- - - - -]
+                                        [- - p - -]
+                                        [- P - - -]
+                                        [- - - - -]]
 
-                                            '[[- - - - -] [- - - - -] [- - - - -]
-                                              [- - - - -] [- P - - -] [- - - - -]
-                                              [- P p - -] [- - p - -] [- - P Q -]
-                                              [- - - - -] [- - - - -] [- - - - -]
-                                              [- - - - -] [- - - - -] [- - - - -]]))
+                                      '[[- - - - -] [- - - - -] [- - - - -]
+                                        [- - - - -] [- P - - -] [- - - - -]
+                                        [- P p - -] [- - p - -] [- - P Q -]
+                                        [- - - - -] [- - - - -] [- - - - -]
+                                        [- - - - -] [- - - - -] [- - - - -]]))

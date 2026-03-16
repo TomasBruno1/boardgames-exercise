@@ -11,51 +11,51 @@
 (deftest king-checks-contraints-test
 
   (t/expect-chess-moves {:piece :P}
-                        ;; Cannot move P, it's pinned by r
-                        '[[- - - - -]
-                          [- - - - -]
-                          [K P - r -]
-                          [- - - - -]
-                          [- - - - -]]
+                    ;; Cannot move P, it's pinned by r
+                    '[[- - - - -]
+                      [- - - - -]
+                      [K P - r -]
+                      [- - - - -]
+                      [- - - - -]]
 
-                        '[])
+                    '[])
   (t/expect-chess-moves {:piece :K}
-                        ;; K cannot move forward
-                        '[[- - - - -]
-                          [- - - r -]
-                          [K - - - -]
-                          [- - - - -]
-                          [- - - - -]]
+                    ;; K cannot move forward
+                    '[[- - - - -]
+                      [- - - r -]
+                      [K - - - -]
+                      [- - - - -]
+                      [- - - - -]]
 
-                        '[[- - - - -] [- - - - -] [- - - - -]
-                          [- - - r -] [- - - r -] [- - - r -]
-                          [- - - - -] [- - - - -] [- K - - -]
-                          [K - - - -] [- K - - -] [- - - - -]
-                          [- - - - -] [- - - - -] [- - - - -]])
+                    '[[- - - - -] [- - - - -] [- - - - -]
+                      [- - - r -] [- - - r -] [- - - r -]
+                      [- - - - -] [- - - - -] [- K - - -]
+                      [K - - - -] [- K - - -] [- - - - -]
+                      [- - - - -] [- - - - -] [- - - - -]])
 
   (t/expect-chess-moves {:piece :p} ;; lower case sets the turn to black
-                        ;; Cannot move p, it's pinned by R
-                        '[[- - - - -]
-                          [k p - - R]
-                          [- - - - -]
-                          [- - - - -]
-                          [- - - - -]]
+                    ;; Cannot move p, it's pinned by R
+                    '[[- - - - -]
+                      [k p - - R]
+                      [- - - - -]
+                      [- - - - -]
+                      [- - - - -]]
 
-                        '[])
+                    '[])
 
   (t/expect-chess-moves {:piece :k}
 
-                        '[[k - - - -]
-                          [- - - - -]
-                          [P P - - -]
-                          [- - - - -]
-                          [- - - - -]]
+                    '[[k - - - -]
+                      [- - - - -]
+                      [P P - - -]
+                      [- - - - -]
+                      [- - - - -]]
 
-                        '[[- k - - -]
-                          [- - - - -]
-                          [P P - - -]
-                          [- - - - -]
-                          [- - - - -]]))
+                    '[[- k - - -]
+                      [- - - - -]
+                      [P P - - -]
+                      [- - - - -]
+                      [- - - - -]]))
 
 
 (deftest castling-test
@@ -119,7 +119,7 @@
                           [P P P P P P P P] [P P P P P P P P]
                           [R N B Q K B N R] [R N B Q K B N R]])
 
-  ;; white. long
+;; white. long
   (t/expect-chess-moves {:piece :K}
                         '[[r n b q k b n r]
                           [p p p p p p p p]
@@ -143,7 +143,7 @@
 (deftest castling-king-check-on-path
 
   ;; white. short
-  (t/expect-chess-moves {:piece :K}
+(t/expect-chess-moves {:piece :K}
                         '[[- - - - - - - -]
                           [- - - - - - - -]
                           [- - - - - - - -]
@@ -228,15 +228,15 @@
 (t/view-test-case
 
  (t/expect-chess-moves {:piece :K}
-                       ;; K cannot move forward
-                       '[[- - - - -]
-                         [- - - r -]
-                         [K - - - -]
-                         [- - - - -]
-                         [- - - - -]]
+                    ;; K cannot move forward
+                    '[[- - - - -]
+                      [- - - r -]
+                      [K - - - -]
+                      [- - - - -]
+                      [- - - - -]]
 
-                       '[[- - - - -] [- - - - -] [- - - - -]
-                         [- - - r -] [- - - r -] [- - - r -]
-                         [- - - - -] [- - - - -] [- K - - -]
-                         [K - - - -] [- K - - -] [- - - - -]
-                         [- - - - -] [- - - - -] [- - - - -]]))
+                    '[[- - - - -] [- - - - -] [- - - - -]
+                      [- - - r -] [- - - r -] [- - - r -]
+                      [- - - - -] [- - - - -] [- K - - -]
+                      [K - - - -] [- K - - -] [- - - - -]
+                      [- - - - -] [- - - - -] [- - - - -]]))

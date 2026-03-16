@@ -1,5 +1,5 @@
 (ns boardgames.clerk-testrunner
-  {:nextjournal.clerk/visibility {:code :hide :result :show}}
+  {:nextjournal.clerk/visibility {:code :hide :result :show} }
 
   (:require [clojure.test :as test]
 
@@ -12,7 +12,9 @@
             [boardgames.rook-test]
             [boardgames.simple-test]
             [boardgames.kingcheck-test]
-            [boardgames.stockfish-parity-test]))
+            [boardgames.stockfish-parity-test]
+            
+            ))
 
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
@@ -40,4 +42,5 @@
 
 
 #_(comment
-    (run-tests-on-clerk))
+    (run-tests-on-clerk)
+    )

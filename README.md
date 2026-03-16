@@ -7,7 +7,7 @@ Published at https://neuroning.com/boardgames-exercise/
 This repo is a solution to exercise 2.13 of book _"Software Design for
 Flexibility"_ by by Chris Hanson and Gerald Jay Sussman. In Clojure.
 
-**Assignment**: Model the rules of Chess. Design the code with the
+__Assignment__: Model the rules of Chess. Design the code with the
 flexibility to easily add new types of pieces with unique movements. The
 goal is to create a shared core model that can also be used for other
 board games, such as Checkers, Tic-Tac-Toe, and similar.
@@ -15,7 +15,6 @@ board games, such as Checkers, Tic-Tac-Toe, and similar.
 The code includes [Clerk](https://github.com/nextjournal/clerk) notebooks with a code walkthrough of the implementation with visualizatons and code stepper.
 
 ## To start Clerk notebooks locally
-
 Install clj and babashka. Then run:
 
 ```sh
@@ -52,7 +51,6 @@ bb test --skip-meta :failing-on-purpose
 ```
 bb build-static
 ```
-
 Generates the static site with all code and notebooks. The output goes under `public/`
 
 ## License
