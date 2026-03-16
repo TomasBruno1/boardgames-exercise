@@ -7,14 +7,15 @@ Published at https://neuroning.com/boardgames-exercise/
 This repo is a solution to exercise 2.13 of book _"Software Design for
 Flexibility"_ by by Chris Hanson and Gerald Jay Sussman. In Clojure.
 
-__Assignment__: Model the rules of Chess. Design the code with the
- flexibility to easily add new types of pieces with unique movements. The
- goal is to create a shared core model that can also be used for other
+**Assignment**: Model the rules of Chess. Design the code with the
+flexibility to easily add new types of pieces with unique movements. The
+goal is to create a shared core model that can also be used for other
 board games, such as Checkers, Tic-Tac-Toe, and similar.
 
 The code includes [Clerk](https://github.com/nextjournal/clerk) notebooks with a code walkthrough of the implementation with visualizatons and code stepper.
 
 ## To start Clerk notebooks locally
+
 Install clj and babashka. Then run:
 
 ```sh
@@ -36,11 +37,22 @@ bb test
 bb test --skip-meta :failing-on-purpose
 ```
 
+Stockfish parity tests are included and tagged with `:stockfish` metadata. They
+auto-skip when the `stockfish` binary is not available.
+
+You can provide an explicit binary path with:
+
+```sh
+set STOCKFISH_BIN=C:\\path\\to\\stockfish.exe
+bb test --skip-meta :failing-on-purpose
+```
+
 ## To build the static site
 
 ```
 bb build-static
 ```
+
 Generates the static site with all code and notebooks. The output goes under `public/`
 
 ## License
